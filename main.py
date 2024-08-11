@@ -20,12 +20,14 @@ def download_video(url, file_type):
         if file_type == "mp3":
             ydl_opts = {
                 'format': 'bestaudio/best',
-                'outtmpl': os.path.join(output_path, '%(title)s.mp3')
+                'outtmpl': os.path.join(output_path, '%(title)s.mp3'),
+                'cookiefile': 'youtube_cookies.txt'
             }
         elif file_type == "mp4":
             ydl_opts = {
                 'format': 'best[ext=mp4]/best', 
-                'outtmpl': os.path.join(output_path, '%(title)s.%(ext)s')
+                'outtmpl': os.path.join(output_path, '%(title)s.%(ext)s'),
+                'cookiefile': 'youtube_cookies.txt'
             }
         else:
             return {"error": "Invalid file type. Please choose 'mp3' or 'mp4'."}
