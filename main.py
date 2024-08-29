@@ -25,7 +25,7 @@ def download_video(url, file_type):
             }
         elif file_type == "mp4":
             ydl_opts = {
-                'format': 'best[ext=mp4]/best', 
+                'format': 'bestvideo/best', 
                 'outtmpl': os.path.join(output_path, '%(title)s.%(ext)s'),
                 'cookiefile': 'youtube_cookies.txt'
             }
