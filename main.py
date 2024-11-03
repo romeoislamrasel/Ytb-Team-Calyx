@@ -9,36 +9,50 @@ app = Flask(__name__)
 
 def download_video(url, file_type):
     try:
+        # Step 1: Set up output directory
         output_path = 'audio' if file_type == 'mp3' else 'video'
-
+        
+        # Step 2: Create directory if it doesn't exist
         if not os.path.exists(output_path):
             os.makedirs(output_path)
+            
+        # Step 3: Check write permissions
         if not os.access(output_path, os.W_OK):
             return {"error": "The output path is not writable."}
 
+        # Step 4: Configure download options
         ydl_opts = {}
+        
+        # Step 5: For MP3 downloads
         if file_type == "mp3":
             ydl_opts = {
                 'format': 'bestaudio/best',
                 'outtmpl': os.path.join(output_path, '%(title)s.mp3'),
                 'cookiefile': 'youtube_cookies.txt'
             }
+            
+        # Step 6: For MP4 downloads (360p)
         elif file_type == "mp4":
             ydl_opts = {
-                'format': 'bestvideo+bestaudio/best', 
+                # This line specifies 360p quality
+                'format': 'bestvideo[height<=360]+bestaudio/best[height<=360]',
                 'outtmpl': os.path.join(output_path, '%(title)s.%(ext)s'),
                 'cookiefile': 'youtube_cookies.txt',
                 'merge_output_format': 'mp4'
             }
+            
+        # Step 7: Handle invalid file type
         else:
             return {"error": "Invalid file type. Please choose 'mp3' or 'mp4'."}
 
+        # Step 8: Download the video
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info_dict = ydl.extract_info(url, download=True)
             file_name = ydl.prepare_filename(info_dict)
             file_name = os.path.basename(file_name)
             return {"message": "Download successful", "file_name": file_name}
 
+    # Step 9: Handle errors
     except yt_dlp.utils.DownloadError as e:
         return {"error": f"Download error: {str(e)}"}
     except Exception as e:
