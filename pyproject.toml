@@ -7,7 +7,7 @@ authors = ["Your Name <you@example.com>"]
 [tool.poetry.dependencies]
 python = ">=3.10.0,<3.12"
 pytube = "^15.0.0"
-yt-dlp = "^2024.11.18" 
+yt-dlp = "^2024.12.06" 
 flask = "^3.0.3"
 schedule = "^1.2.2"
 
